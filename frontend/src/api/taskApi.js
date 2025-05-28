@@ -1,6 +1,6 @@
 
 import Cookies from 'js-cookie'; 
-const BASE_URL = 'http://localhost:8000/api/v1/';
+const BASE_URL = 'https://polycab-project-mangement.onrender.com/api/v1/';
 const TASKS_URL = `${BASE_URL}tasks/dashboard/task-summary/`;
 const USERS_URL = `${BASE_URL}users/`;
 const AUTH_URL = `${BASE_URL}auth/`;
