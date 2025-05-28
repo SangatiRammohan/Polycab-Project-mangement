@@ -1,0 +1,96 @@
+/* ProjectCard.css */
+.project-card {
+    background-color: white;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  
+  .card-header {
+    padding: 12px 15px;
+    color: white;
+    text-align: center;
+  }
+  
+  .card-title {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 500;
+  }
+  
+  .card-content {
+    padding: 15px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .content-title {
+    margin: 0 0 5px 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+  }
+  
+  .task-category {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0;
+  }
+  
+  .task-label {
+    font-size: 14px;
+    font-weight: 500;
+  }
+  
+  .task-count {
+    font-size: 24px;
+    font-weight: 600;
+  }
+  
+  /* Nil - Red */
+  .task-label.nil {
+    color: #ee3338;
+  }
+  
+  .task-count.nil {
+    color: #ee3338;
+  }
+  
+  /* In Progress - Yellow/Orange */
+  .task-label.in-progress {
+    color: #ffa500;
+  }
+  
+  .task-count.in-progress {
+    color: #ffa500;
+  }
+  
+  /* Completed - Green */
+  .task-label.completed {
+    color: #28a745;
+  }
+  
+  .task-count.completed {
+    color: #28a745;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .card-header {
+      padding: 10px;
+    }
+    
+    .card-content {
+      padding: 12px;
+    }
+    
+    .task-count {
+      font-size: 20px;
+    }
+  }

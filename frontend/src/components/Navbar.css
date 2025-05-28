@@ -1,0 +1,107 @@
+.navbar {
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 0;
+  width: 100%;
+}
+
+.navbar-container {
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Top section with logo and title */
+.navbar-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* padding: 10px 20px; */
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  width: 100%; /* Make the container take up full width */
+}
+
+.logo-image {
+  width: 100%; /* Make the image take up full width of its container */
+  height: auto; /* Maintain aspect ratio */
+  /* margin-right: 15px; */
+}
+
+/* Bottom section with navigation links */
+.navbar-bottom {
+  background-color: #f8f9fa;
+  padding: 8px 20px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.navbar-links {
+  display: flex;
+  float: right;
+  gap: 20px;
+}
+
+.nav-link {
+  color: #4a5568;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 5px 0;
+  position: relative;
+}
+
+.nav-link:hover {
+  color: #1a365d;
+}
+
+.nav-link:hover:after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #1a365d;
+}
+
+/* User controls */
+.user-controls {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.icon-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #4a5568;
+}
+
+.icon-button:hover {
+  background-color: #f1f5f9;
+  color: #1a365d;
+}
+
+.logout-button {
+  background-color: #1a365d;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.logout-button:hover {
+  background-color: #153e75;
+}

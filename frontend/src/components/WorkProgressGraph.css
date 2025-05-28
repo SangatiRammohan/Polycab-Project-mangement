@@ -1,0 +1,179 @@
+/* Main timeline container */
+.timeline-chart {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Timeline header styling */
+.timeline-header {
+  background-color: #f8f8f8;
+  border-bottom: 1px solid #ddd;
+}
+
+.timeline-header-row {
+  display: flex;
+  position: relative;
+}
+
+.timeline-task-name {
+  width: 250px;
+  min-width: 250px;
+  padding: 10px;
+  font-weight: bold;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+}
+
+.timeline-months {
+  flex: 1;
+  border-left: 1px solid #ddd;
+  display: flex;
+}
+
+.timeline-month {
+  padding: 10px 5px;
+  font-weight: bold;
+  position: relative;
+  border-right: 1px solid #eee;
+  color: #555;
+  flex: 1;
+  text-align: center;
+  font-size: 12px;
+}
+
+.timeline-month:last-child {
+  border-right: none;
+}
+
+/* Timeline body styling */
+.timeline-body {
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+.timeline-row {
+  display: flex;
+  border-bottom: 1px solid #eee;
+  min-height: 50px;
+  align-items: center;
+}
+
+.timeline-row:last-child {
+  border-bottom: none;
+}
+
+.timeline-task-bar {
+  height: 40px;
+  border-left: 1px solid #ddd;
+  overflow-x: auto;
+  background-image: linear-gradient(to right, #eee 1px, transparent 1px);
+  background-size: calc(100% / 12) 100%;
+}
+
+/* Task bars styling by status */
+.timeline-chart-bar {
+  height: 20px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.timeline-chart-bar.planned {
+  background-color:  #E74C3C;
+}
+
+.timeline-chart-bar.in-progress {
+  background-color: #F39C12;
+}
+
+.timeline-chart-bar.completed {
+  background-color: #1E8449;
+}
+
+.timeline-chart-bar.delayed {
+  background-color: #E74C3C;
+}
+
+/* Legend styling */
+.timeline-legend {
+  padding: 10px;
+  border-top: 1px solid #eee;
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.legend-color {
+  width: 20px;
+  height: 10px;
+  border-radius: 2px;
+}
+
+.legend-color.planned {
+  background-color: #93C5FD;
+}
+
+.legend-color.in-progress {
+  background-color: #F39C12;
+}
+
+.legend-color.completed {
+  background-color: #1E8449;
+}
+
+.legend-color.delayed {
+  background-color: #E74C3C;
+}
+
+.task-milestone {
+  font-size: 12px;
+  color: #666;
+}
+
+.task-dates {
+  font-size: 10px;
+  color: #888;
+  margin-top: 2px;
+}
+
+/* Empty state styling */
+.empty-timeline {
+  padding: 40px 20px;
+  text-align: center;
+  color: #888;
+  font-style: italic;
+}
+
+/* Title styling */
+h1.timeline-title {
+  text-align: center;
+  color: #00008B;
+  font-size: 32px;
+  margin-bottom: 30px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .timeline-task-name {
+    width: 150px;
+    min-width: 150px;
+  }
+  
+  .timeline-month {
+    font-size: 10px;
+  }
+}

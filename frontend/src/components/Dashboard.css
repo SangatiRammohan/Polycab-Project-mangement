@@ -1,0 +1,256 @@
+/* Dashboard.css */
+:root {
+  --primary-color: #0A1172; /* Deep blue similar to POLYCAB's theme */
+  --secondary-color: #FF304F; /* Red from POLYCAB */
+  --completed-color: #1E8449; /* Green for completed tasks */
+  --in-progress-color: #F39C12; /* Yellow/orange for in-progress tasks */
+  --nil-color: #E74C3C; /* Red for nil tasks */
+  --light-bg: #f7f7f7;
+  --card-bg: #fff;
+  --border-radius: 8px;
+  --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: var(--light-bg);
+}
+
+/* Main Dashboard Container */
+.dashboard {
+  padding: 20px;
+  margin-top: 30px;
+  background-color: var(--light-bg);
+  min-height: calc(100vh - 60px);  
+}
+
+/* Dashboard Content with sidebar and cards */
+.dashboard-content {
+  display: flex;
+  gap: 25px;
+  margin-bottom: 30px;
+}
+
+.dashboard-sidebar {
+  flex: 0 0 auto;
+}
+
+/* Dashboard Header */
+.dashboard-title {
+  margin: 20px 0;
+}
+
+.dashboard-title h1 {
+  color: var(--primary-color);
+  margin: 0;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+/* Stats Cards */
+.dashboard-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.stat-card {
+  background-color: var(--card-bg);
+  border-radius: var(--border-radius);
+  padding: 15px;
+  box-shadow: var(--box-shadow);
+  text-align: center;
+}
+
+.stat-card h3 {
+  margin: 0 0 10px 0;
+  font-size: 16px;
+  color: #555;
+  font-weight: 600;
+}
+
+.stat-card .stat-value {
+  font-size: 28px;
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+.stat-card.completion {
+  grid-column: span 1;
+}
+
+.progress-bar {
+  height: 10px;
+  background-color: #e9ecef;
+  border-radius: 5px;
+  margin-top: 10px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: var(--completed-color);
+  border-radius: 5px;
+  transition: width 0.3s ease;
+}
+
+/* Section Headers */
+h2 {
+  color: var(--primary-color);
+  margin: 30px 0 15px 0;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+/* Project Cards Grid */
+.project-cards-grid {
+  display: grid;
+  flex: 1;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+/* Project Card Styling - for ProjectCard component */
+.project-card {
+  background-color: var(--card-bg);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--box-shadow);
+}
+
+.project-card-header {
+  padding: 12px 15px;
+  color: white;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.project-card-body {
+  padding: 15px;
+}
+
+.project-card-title {
+  margin: 0 0 20px 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.task-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.task-stat-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.task-label {
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+}
+
+.task-count {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.task-count.nil {
+  color: var(--nil-color);
+}
+
+.task-count.in-progress {
+  color: var(--in-progress-color);
+}
+
+.task-count.completed {
+  color: var(--completed-color);
+}
+
+/* Timeline Section */
+.timeline-section {
+  background-color: var(--card-bg);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  padding: 20px;
+  margin-top: 30px;
+}
+
+.timeline-section h2 {
+  margin-top: 0;
+}
+
+/* Timeline Chart */
+.timeline-chart {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.timeline-chart table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.timeline-row {
+  height: 30px;
+  border-bottom: 1px solid #eee;
+}
+
+.timeline-row:last-child {
+  border-bottom: none;
+}
+
+.timeline-task-name {
+  width: 25%;
+  padding: 8px;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.timeline-chart-bar {
+  position: relative;
+  height: 20px;
+  background-color: #eee;
+}
+
+.timeline-chart-bar.planned {
+  background-color: #93C5FD;
+}
+
+.timeline-chart-bar.in-progress {
+  background-color: var(--in-progress-color);
+}
+
+.timeline-chart-bar.completed {
+  background-color: var(--completed-color);
+}
+
+.timeline-chart-bar.delayed {
+  background-color: var(--nil-color);
+}
+
+/* Loading and Error Messages */
+.loading, .error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+  font-size: 18px;
+  color: #555;
+}
+
+.error {
+  color: var(--nil-color);
+}
+
+/* Header with logo section styling */
+.app-header {
+  background: linear-gradient(90deg, var(--primary-color) 0%, var(--secondary-color) 100%);}

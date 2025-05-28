@@ -1,0 +1,474 @@
+/* UserManagement.css */
+
+/* Global Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f5f5f5;
+  color: #333;
+}
+
+/* Header Banner */
+.app-header {
+  background-image: linear-gradient(to right, rgba(0, 0, 70, 0.8), rgba(0, 0, 70, 0.95)), url('/background-dots.png');
+  background-size: cover;
+  height: 180px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 40px;
+}
+
+.app-logo {
+  font-size: 42px;
+  font-weight: bold;
+  color: #ff4d25;
+  margin-bottom: 10px;
+}
+
+.app-title {
+  font-size: 36px;
+  color: #ff4d25;
+  font-weight: bold;
+}
+
+.navbar {
+  background-color: #000080;
+  padding: 10px 0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.nav-icons {
+  margin-right: 20px;
+}
+
+.nav-icon {
+  background-color: white;
+  color: #000080;
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+/* User Management Container */
+.user-management-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  overflow-x: hidden; /* Prevent horizontal scroll on container */
+}
+
+.user-management-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap; /* Allow wrapping on small screens */
+  gap: 10px;
+}
+
+.user-management-header h1 {
+  font-size: 28px; /* Slightly smaller title for better fit */
+  color: #333;
+  margin-right: 10px;
+}
+
+.user-management-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap; /* Allow wrapping on small screens */
+}
+
+.search-container {
+  position: relative;
+}
+
+.search-input {
+  padding: 10px 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  max-width: 250px;
+  font-size: 14px;
+}
+
+.add-user-btn {
+  background-color: #000080;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.add-user-btn:hover {
+  background-color: #00006a;
+}
+
+/* Table Styles - Improved for responsive behavior */
+.table-container {
+  width: 100%;
+  overflow-x: auto; /* Enable horizontal scrolling for table */
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.users-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 650px; /* Minimum width to ensure readability */
+}
+
+.users-table th {
+  background-color: #000080;
+  color: white;
+  text-align: left;
+  padding: 12px 15px;
+  font-weight: bold;
+  white-space: nowrap; /* Prevent header text wrapping */
+}
+
+.users-table td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #eee;
+  max-width: 250px; /* Limit cell width */
+  overflow: hidden;
+  text-overflow: ellipsis; /* Add ellipsis for overflowing text */
+  white-space: nowrap; /* Prevent text wrapping in cells */
+}
+
+/* Allow email column to wrap if needed */
+.users-table td:nth-child(3) {
+  white-space: normal;
+  word-break: break-word;
+}
+
+.users-table tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+.role-badge {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: bold;
+  background-color: #e0e0e0;
+  white-space: nowrap;
+}
+
+.role-badge.admin {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.role-badge.project_manager {
+  background-color: #2196F3;
+  color: white;
+}
+
+.role-badge.site_manager, .role-badge.site_engineer {
+  background-color: #FF9800;
+  color: white;
+}
+
+.role-badge.quality_inspector {
+  background-color: #9C27B0;
+  color: white;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap; /* Allow buttons to wrap if needed */
+}
+
+.update-btn, .edit-btn {
+  background-color: #FFC107;
+  color: #333;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  white-space: nowrap;
+  min-width: 70px; /* Consistent button width */
+}
+
+.delete-btn {
+  background-color: #F44336;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  white-space: nowrap;
+  min-width: 70px; /* Consistent button width */
+}
+
+.update-btn:hover, .edit-btn:hover {
+  background-color: #e5ac00;
+}
+
+.delete-btn:hover {
+  background-color: #d32f2f;
+}
+
+/* Pagination - Made more responsive */
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  align-items: center;
+  flex-wrap: wrap; /* Allow wrapping on very small screens */
+  gap: 10px;
+}
+
+.pagination-btn {
+  background-color: #000080;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 0 5px;
+  white-space: nowrap;
+}
+
+.pagination-btn:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.pagination-info {
+  white-space: nowrap;
+  padding: 0 10px;
+}
+
+/* Forms - Improved for better handling */
+.add-user-form-container {
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.user-form {
+  padding: 20px;
+}
+
+.user-form h2 {
+  margin-bottom: 20px;
+  color: #000080;
+  font-size: 24px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: bold;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.form-group .error-text {
+  color: red;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.error {
+  border-color: red;
+}
+
+/* Modal with improved responsiveness */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 10px; /* Reduced padding for better fit */
+  overflow-y: auto;
+}
+
+.modal {
+  background-color: #fff;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 600px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  max-height: 95vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.modal-header {
+  background-color: #000080;
+  color: white;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h2 {
+  font-size: 20px;
+  margin: 0;
+  word-break: break-word; /* Allow long usernames to wrap */
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 0 0 5px 10px; /* Increase clickable area */
+}
+
+.modal-body {
+  padding: 20px;
+  overflow-y: auto;
+}
+
+/* Form actions */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+  flex-wrap: wrap; /* Allow buttons to wrap on small screens */
+}
+
+.cancel-btn,
+.submit-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  min-width: 100px; /* Consistent button width */
+}
+
+.cancel-btn {
+  background-color: #ccc;
+  color: #333;
+}
+
+.submit-btn {
+  background-color: #000080;
+  color: white;
+}
+
+.submit-btn:disabled {
+  background-color: #999;
+  cursor: not-allowed;
+}
+
+/* Loading and error states */
+.loading-container, 
+.error-message,
+.no-users-container {
+  padding: 20px;
+  text-align: center;
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.no-results {
+  text-align: center;
+  padding: 20px 0;
+}
+
+/* Media queries for better responsive behavior */
+@media screen and (max-width: 768px) {
+  .user-management-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .user-management-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .search-input {
+    max-width: none;
+    flex-grow: 1;
+  }
+  
+  .edit-btn, .delete-btn {
+    padding: 6px 10px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .user-management-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .search-container {
+    width: 100%;
+  }
+  
+  .search-input {
+    width: 100%;
+    max-width: none;
+  }
+  
+  .add-user-btn {
+    width: 100%;
+    text-align: center;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .edit-btn, .delete-btn {
+    width: 100%;
+    text-align: center;
+  }
+}

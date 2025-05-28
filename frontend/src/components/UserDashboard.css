@@ -1,0 +1,195 @@
+/* Dashboard Container */
+.dashboard-container {
+    max-width: 100%;
+    padding: 20px;
+    background-color: #f4f6f9;
+    min-height: 100vh;
+}
+
+/* Dashboard Header */
+.dashboard-header {
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-content h1 {
+    margin: 0;
+    color: #333;
+    font-size: 24px;
+}
+
+.header-content p {
+    margin: 5px 0 0;
+    color: black;
+    font-size: 14px;
+}
+
+/* Logout Button */
+.logout-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: rgb(65, 44, 149);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.logout-button:hover {
+    background-color: rgb(62, 62, 157);
+}
+
+.logout-button svg {
+    margin-right: 5px;
+}
+
+/* Error Message */
+.error-message {
+    display: flex;
+    align-items: center;
+    background-color: #fff2f0;
+    color: #ff4d4f;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+.error-message svg {
+    margin-right: 10px;
+}
+
+/* Loading State */
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-size: 18px;
+    color: #666;
+}
+
+/* Task Table */
+.task-table-container {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow-x: auto;
+}
+
+.task-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.task-table thead {
+    background-color: #f0f2f5;
+}
+
+.task-table th, .task-table td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #e8e8e8;
+    white-space: nowrap;
+    
+}
+
+.task-table th {
+    font-weight: 600;
+    color: black;
+    text-transform: uppercase;
+    font-size: 12px;
+}
+tbody td{
+    color: black;
+}
+
+/* Task Status Styles */
+.status-badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.status-badge.status-nil {
+    background-color: #f0f0f0;
+    color: #666;
+}
+
+.status-badge.status-in-progress {
+    background-color: #e6f7ff;
+    color: #1890ff;
+}
+
+.status-badge.status-completed {
+    background-color: #f6ffed;
+    color: #52c41a;
+}
+
+/* Task Row Status Coloring */
+.status-nil {
+    background-color: #f9f9f9;
+}
+
+.status-in_progress {
+    background-color: #f0f8ff;
+}
+
+.status-completed {
+    background-color: #f6fff6;
+}
+
+/* Status Select Dropdown */
+.status-select {
+    width: 100%;
+    padding: 6px;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    background-color: white;
+    font-size: 14px;
+}
+
+/* No Tasks Message */
+.no-tasks {
+    text-align: center;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    color: #666;
+    font-size: 16px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .dashboard-container {
+        padding: 10px;
+    }
+
+    .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .logout-button {
+        margin-top: 10px;
+        align-self: flex-end;
+    }
+
+    .task-table-container {
+        overflow-x: scroll;
+    }
+}
