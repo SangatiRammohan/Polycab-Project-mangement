@@ -13,7 +13,7 @@ const UserDashboard = ({ onLogout }) => {
     const navigate = useNavigate()
 
     // Define your base URL here or import it from a config file
-    const BASE_URL = 'http://localhost:8000/api/v1/';
+    const BASE_URL = 'https://polycab-project-mangement.onrender.com/api/v1/';
 
     // Status mapping for display
     const statusDisplay = {
