@@ -6,7 +6,7 @@
 
 This project holds a very personal story behind it.
 
-In early 2026, I appeared for a technical interview at a company working on infrastructure and field project management solutions for clients like Polycab. As part of their interview process, the team gave me a real-world assignment — build a full-stack project management system that could handle task tracking, user management, location-based filtering, and role-based dashboards, similar to what their own teams use internally.
+In later 2024 & early 2025, I appeared for a technical interview at a company working on infrastructure and field project management solutions for clients like Polycab. As part of their interview process, the team gave me a real-world assignment — build a full-stack project management system that could handle task tracking, user management, location-based filtering, and role-based dashboards, similar to what their own teams use internally.
 
 I gave everything I had to this project. I worked through every requirement they described — building the Django REST API from scratch, designing the role-based authentication system, creating the admin and user dashboards, implementing cascading location dropdowns for Bihar's geography, and making the entire application responsive for mobile field workers. I put in long hours learning the technologies I hadn't used before, debugging deployment issues, and refining the UI to match professional standards.
 
