@@ -1,15 +1,18 @@
 import os
+import dj_database_url
 from pathlib import Path
 from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / '.env')
 
-SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-fallback-key')
-DEBUG = os.environ.get('DEBUG', 'True') == 'True'
+# ── Security ──────────────────────────────────────────────────────────────────
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-ny#!8eo+*micgye_a#ci)*myw9n)u5&=&7#6-$bg%^c*e-o3a)')
+DEBUG      = os.environ.get('DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
+# ── Apps ──────────────────────────────────────────────────────────────────────
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -24,8 +27,9 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
 ]
 
+# ── Middleware ────────────────────────────────────────────────────────────────
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',  # Must be at TOP
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -60,32 +64,44 @@ TEMPLATES = [
 WSGI_APPLICATION = 'backend.wsgi.application'
 
 # ── Database ──────────────────────────────────────────────────────────────────
-# Supports both SQLite (local dev) and MySQL (production)
-# Controlled entirely by .env file — no code changes needed to switch
+# On Render: DATABASE_URL env var is set automatically → uses PostgreSQL
+# Locally:   falls back to MySQL via individual DB_* env vars from .env
+# Switch between them by setting/unsetting DATABASE_URL in the environment
 
-DB_ENGINE = os.environ.get('DB_ENGINE', 'django.db.backends.mysql')
+DATABASE_URL = os.environ.get('DATABASE_URL')
 
-if DB_ENGINE == 'django.db.backends.sqlite3':
-    # SQLite needs the full file path
+if DATABASE_URL:
+    # Production — Render PostgreSQL
     DATABASES = {
-        'default': {
-            'ENGINE': DB_ENGINE,
-            'NAME': BASE_DIR / os.environ.get('DB_NAME', 'db.sqlite3'),
-        }
+        'default': dj_database_url.config(
+            default=DATABASE_URL,
+            conn_max_age=600,
+            ssl_require=True,
+        )
     }
 else:
-    # MySQL / PostgreSQL use plain string name
-    DATABASES = {
-        'default': {
-            'ENGINE':   DB_ENGINE,
-            'NAME':     os.environ.get('DB_NAME',     'polycab_db'),
-            'USER':     os.environ.get('DB_USER',     'polycab_user'),
-            'PASSWORD': os.environ.get('DB_PASSWORD', ''),
-            'HOST':     os.environ.get('DB_HOST',     '127.0.0.1'),
-            'PORT':     os.environ.get('DB_PORT',     '3306'),
+    # Local development — MySQL (from .env)
+    DB_ENGINE = os.environ.get('DB_ENGINE', 'django.db.backends.mysql')
+    if DB_ENGINE == 'django.db.backends.sqlite3':
+        DATABASES = {
+            'default': {
+                'ENGINE': DB_ENGINE,
+                'NAME':   BASE_DIR / os.environ.get('DB_NAME', 'db.sqlite3'),
+            }
         }
-    }
+    else:
+        DATABASES = {
+            'default': {
+                'ENGINE':   DB_ENGINE,
+                'NAME':     os.environ.get('DB_NAME',     'polycab_db'),
+                'USER':     os.environ.get('DB_USER',     'polycab_user'),
+                'PASSWORD': os.environ.get('DB_PASSWORD', ''),
+                'HOST':     os.environ.get('DB_HOST',     '127.0.0.1'),
+                'PORT':     os.environ.get('DB_PORT',     '3306'),
+            }
+        }
 
+# ── Password Validation ───────────────────────────────────────────────────────
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -93,6 +109,7 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
+# ── REST Framework ────────────────────────────────────────────────────────────
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
@@ -100,26 +117,32 @@ REST_FRAMEWORK = {
     ],
 }
 
+# ── Auth ──────────────────────────────────────────────────────────────────────
 AUTH_USER_MODEL = 'users.User'
 
+# ── Internationalisation ──────────────────────────────────────────────────────
 LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
-USE_I18N = True
-USE_L10N = True
-USE_TZ = True
+TIME_ZONE     = 'UTC'
+USE_I18N      = True
+USE_L10N      = True
+USE_TZ        = True
 
-STATIC_URL = '/static/'
-MEDIA_URL  = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+# ── Static & Media ────────────────────────────────────────────────────────────
+STATIC_URL  = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'   # needed for collectstatic on Render
+MEDIA_URL   = '/media/'
+MEDIA_ROOT  = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# ── CORS ──────────────────────────────────────────────────────────────────────
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = os.environ.get(
     'CORS_ALLOWED_ORIGINS',
     'http://localhost:5173,http://localhost:3000'
 ).split(',')
 
+# ── CSRF ──────────────────────────────────────────────────────────────────────
 CSRF_TRUSTED_ORIGINS = os.environ.get(
     'CORS_ALLOWED_ORIGINS',
     'http://localhost:5173,http://localhost:3000'
@@ -128,6 +151,6 @@ CSRF_TRUSTED_ORIGINS = os.environ.get(
 FRONTEND_URL = os.environ.get('FRONTEND_URL', 'http://localhost:5173')
 
 CSRF_COOKIE_NAME     = 'csrftoken'
-CSRF_COOKIE_HTTPONLY = False
+CSRF_COOKIE_HTTPONLY = False    # False so js-cookie can read it
 CSRF_COOKIE_SAMESITE = 'Lax'
 SESSION_COOKIE_SAMESITE = 'Lax'

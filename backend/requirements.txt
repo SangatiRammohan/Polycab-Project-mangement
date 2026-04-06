@@ -6,3 +6,6 @@ django-filter==23.2.0
 djangorestframework-simplejwt==5.2.2
 coreapi
 python-dotenv==1.0.0
+gunicorn
+psycopg2-binary
+dj-database-url==2.1.0
