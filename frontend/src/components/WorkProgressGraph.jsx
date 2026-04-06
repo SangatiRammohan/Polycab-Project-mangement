@@ -1,110 +1,103 @@
 import React from 'react';
-import './WorkProgressGraph.css'; // Import your CSS file for styling
-// import './Dashboard.css'; // Import your CSS file for styling
+import './WorkProgressGraph.css';
+
 const TimelineGraph = ({ timelineData }) => {
   if (!timelineData || !timelineData.tasks || timelineData.tasks.length === 0) {
     return <div className="empty-timeline">No timeline data available</div>;
   }
 
-  // Calculate date range for the timeline
   const startDate = new Date(timelineData.startDate);
-  const endDate = new Date(timelineData.endDate);
-  
-  // Add padding to the date range (1 month before and after)
+  const endDate   = new Date(timelineData.endDate);
+
+  // Add 1 month padding on each side
   startDate.setMonth(startDate.getMonth() - 1);
   endDate.setMonth(endDate.getMonth() + 1);
-  
-  // Generate array of months for the timeline header
+
+  // Build months array for header
   const months = [];
-  const currentDate = new Date(startDate);
-  while (currentDate <= endDate) {
-    months.push(new Date(currentDate));
-    currentDate.setMonth(currentDate.getMonth() + 1);
+  const cur = new Date(startDate);
+  while (cur <= endDate) {
+    months.push(new Date(cur));
+    cur.setMonth(cur.getMonth() + 1);
   }
-  
-  // Function to calculate position and width for a task bar
-  const calculateTaskBar = (task) => {
-    const taskStart = new Date(task.startDate);
-    const taskEnd = new Date(task.endDate || new Date());
-    
-    // Calculate position as percentage of the timeline
-    const totalDuration = endDate.getTime() - startDate.getTime();
-    const taskStartOffset = taskStart.getTime() - startDate.getTime();
-    const taskDuration = taskEnd.getTime() - taskStart.getTime();
-    
-    const startPercent = (taskStartOffset / totalDuration) * 100;
-    const widthPercent = (taskDuration / totalDuration) * 100;
-    
+
+  const totalDuration = endDate.getTime() - startDate.getTime();
+
+  const calculateBar = (task) => {
+    const ts = new Date(task.startDate).getTime();
+    const te = new Date(task.endDate || new Date()).getTime();
+    const left  = ((ts - startDate.getTime()) / totalDuration) * 100;
+    const width = ((te - ts) / totalDuration) * 100;
     return {
-      left: `${Math.max(0, startPercent)}%`,
-      width: `${Math.min(100, widthPercent)}%`
+      left:  `${Math.max(0, left)}%`,
+      width: `${Math.max(0.5, Math.min(100 - Math.max(0, left), width))}%`,
     };
   };
-  
-  // Format date for display (e.g. Jan 2025)
-  const formatMonth = (date) => {
-    return `${date.toLocaleString('default', { month: 'short' })} ${date.getFullYear()}`;
-  };
+
+  const formatMonth = (d) =>
+    `${d.toLocaleString('default', { month: 'short' })} ${d.getFullYear()}`;
 
   return (
     <div className="timeline-chart">
-      <div className="timeline-header">
-        <div className="timeline-header-row">
-          <div className="timeline-task-name"></div>
-          <div className="timeline-months" style={{ display: 'flex' }}>
-            {months.map((month, index) => (
-              <div 
-                key={index} 
-                className="timeline-month"
-                style={{ flex: 1, textAlign: 'center', fontSize: '12px' }}
-              >
-                {formatMonth(month)}
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-      
-      <div className="timeline-body">
-        {timelineData.tasks.map((task, index) => {
-          const barStyle = calculateTaskBar(task);
-          return (
-            <div key={index} className="timeline-row">
-              <div className="timeline-task-name">
-                {task.name}
-                <div style={{ fontSize: '12px', color: '#666' }}>{task.milestone}</div>
-              </div>
-              <div className="timeline-task-bar" style={{ position: 'relative', flex: 1 }}>
-                <div 
-                  className={`timeline-chart-bar ${task.status}`}
-                  style={{
-                    position: 'absolute',
-                    left: barStyle.left,
-                    width: barStyle.width,
-                    top: '5px',
-                    borderRadius: '4px'
-                  }}
-                />
+
+      {/* Scroll wrapper — fixes mobile/tablet clipping */}
+      <div className="timeline-scroll-wrapper">
+        <div className="timeline-inner">
+
+          {/* Header row */}
+          <div className="timeline-header">
+            <div className="timeline-header-row">
+              <div className="timeline-task-name" />
+              <div className="timeline-months">
+                {months.map((m, i) => (
+                  <div key={i} className="timeline-month">{formatMonth(m)}</div>
+                ))}
               </div>
             </div>
-          );
-        })}
+          </div>
+
+          {/* Task rows */}
+          <div className="timeline-body">
+            {timelineData.tasks.map((task, i) => {
+              const bar = calculateBar(task);
+              return (
+                <div key={i} className="timeline-row">
+                  <div className="timeline-task-name">
+                    <div>{task.name}</div>
+                    <div style={{ fontSize: 11, color: '#888', marginTop: 2 }}>
+                      {task.milestone}
+                    </div>
+                  </div>
+                  <div className="timeline-task-bar">
+                    <div
+                      className={`timeline-chart-bar ${task.status}`}
+                      style={{ left: bar.left, width: bar.width }}
+                    />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+        </div>
       </div>
-      
-      <div className="timeline-legend" style={{ marginTop: '15px', display: 'flex', gap: '15px', justifyContent: 'center' }}>
-        <div className="legend-item" style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-          <div style={{ width: '20px', height: '10px', backgroundColor: ' #E74C3C', borderRadius: '2px' }}></div>
-          <span style={{ fontSize: '12px' }}>nil</span>
+
+      {/* Legend */}
+      <div className="timeline-legend">
+        <div className="legend-item">
+          <div style={{ width: 20, height: 10, background: '#E74C3C', borderRadius: 2 }} />
+          <span>Nil</span>
         </div>
-        <div className="legend-item" style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-          <div style={{ width: '20px', height: '10px', backgroundColor: '#F39C12', borderRadius: '2px' }}></div>
-          <span style={{ fontSize: '12px' }}>In Progress</span>
+        <div className="legend-item">
+          <div style={{ width: 20, height: 10, background: '#F39C12', borderRadius: 2 }} />
+          <span>In Progress</span>
         </div>
-        <div className="legend-item" style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-          <div style={{ width: '20px', height: '10px', backgroundColor: '#1E8449', borderRadius: '2px' }}></div>
-          <span style={{ fontSize: '12px' }}>Completed</span>
+        <div className="legend-item">
+          <div style={{ width: 20, height: 10, background: '#1E8449', borderRadius: 2 }} />
+          <span>Completed</span>
         </div>
       </div>
+
     </div>
   );
 };

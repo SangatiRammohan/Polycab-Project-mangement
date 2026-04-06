@@ -1,3 +1,4 @@
+import PasswordInput from './PasswordInput';
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import './EditUser.css';
@@ -301,13 +302,14 @@ const EditUser = () => {
                         <>
                             <div className="form-group">
                                 <label htmlFor="password">New Password</label>
-                                <input 
-                                    type="password" 
+                                <PasswordInput
                                     id="password"
-                                    name="password" 
+                                    name="password"
                                     value={formData.password}
                                     onChange={handleChange}
+                                    placeholder="New Password"
                                     className={formError && formError.password ? 'error' : ''}
+                                    autoComplete="new-password"
                                 />
                                 {formError && formError.password && (
                                     <div className="field-error">{formError.password}</div>
@@ -316,13 +318,14 @@ const EditUser = () => {
                             
                             <div className="form-group">
                                 <label htmlFor="confirm_password">Confirm New Password</label>
-                                <input 
-                                    type="password" 
+                                <PasswordInput
                                     id="confirm_password"
-                                    name="confirm_password" 
+                                    name="confirm_password"
                                     value={formData.confirm_password}
                                     onChange={handleChange}
+                                    placeholder="Confirm New Password"
                                     className={formError && formError.confirm_password ? 'error' : ''}
+                                    autoComplete="new-password"
                                 />
                                 {formError && formError.confirm_password && (
                                     <div className="field-error">{formError.confirm_password}</div>

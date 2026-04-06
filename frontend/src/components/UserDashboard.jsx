@@ -1,217 +1,132 @@
 import React, { useState, useEffect } from 'react';
 import { AlertCircle, LogOut } from 'lucide-react';
-import { Navigate, useNavigate } from 'react-router-dom';
-import './UserDashboard.css'
+import { useNavigate } from 'react-router-dom';
+import './UserDashboard.css';
+import bannerImage from '../assets/banner.jpg';
 
-const UserDashboard = ({ onLogout }) => {
-    const [userData, setUserData] = useState({
-        username: localStorage.getItem('userName') || '',
-        tasks: []
-    });
+// Read from .env — never hardcoded
+const BASE_URL = `${import.meta.env.VITE_API_BASE_URL}/`;
+
+const statusDisplay = {
+    'nil':         'Nil',
+    'in_progress': 'In Progress',
+    'completed':   'Completed',
+};
+
+const milestoneMapping = {
+    'desktop_survey_design':  'Desktop Survey Design',
+    'network_health_checkup': 'Network Health Checkup',
+    'hoto_existing':          'HOTO-Existing',
+    'detailed_design':        'Detailed Design',
+    'row':                    'ROW (Right of Way)',
+    'ifc':                    'IFC (Issued for Construction)',
+    'ic':                     'Initial Construction',
+    'as_built':               'As-Built',
+    'hoto_final':             'HOTO (Final)',
+    'field_survey':           'Field Survey',
+};
+
+const UserDashboard = () => {
+    const [tasks, setTasks]         = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState('');
-    const navigate = useNavigate()
+    const [error, setError]         = useState('');
+    const navigate                  = useNavigate();
 
-    // Define your base URL here or import it from a config file
-    const BASE_URL = 'https://polycab-project-mangement.onrender.com/api/v1/';
+    const authToken = localStorage.getItem('authToken');
+    const userId    = localStorage.getItem('userId');
+    const username  = localStorage.getItem('userName');
 
-    // Status mapping for display
-    const statusDisplay = {
-        'nil': 'Nil',
-        'in_progress': 'In Progress',
-        'completed': 'Completed',
-        'PENDING': 'Pending',
-        'IN_PROGRESS': 'In Progress',
-        'COMPLETED': 'Completed'
+    const authHeaders = {
+        'Content-Type': 'application/json',
+        'Authorization': `Token ${authToken}`,
     };
 
-    // Milestone mapping with backend values and display names
-    const milestoneMapping = {
-        'desktop_survey_design': 'Desktop Survey Design',
-        'network_health_checkup': 'Network Health Checkup',
-        'hoto_existing': 'HOTO-Existing',
-        'detailed_design': 'Detailed Design',
-        'row': 'ROW (Right of Way)',
-        'ifc': 'IFC (Issued for Construction)',
-        'ic': 'Initial Construction',
-        'as_built': 'As-Built',
-        'hoto_final': 'HOTO (Final)',
-        'field_survey': 'Field Survey'
+    const handleLogout = () => {
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('userRole');
+        localStorage.removeItem('userName');
+        localStorage.removeItem('userId');
+        navigate('/');
+        window.location.reload();
     };
 
     useEffect(() => {
-        fetchUserData();
+        if (!authToken) { navigate('/'); return; }
+        fetchUserTasks();
     }, []);
 
-    const formatDate = (dateString) => {
-        if (!dateString) return 'No deadline';
-        return new Date(dateString).toLocaleDateString();
-    };
-
-    const getMilestoneName = (milestoneValue) => {
-        return milestoneMapping[milestoneValue] || milestoneValue;
-    };
-
-    const fetchUserData = async () => {
+    const fetchUserTasks = async () => {
         try {
             setIsLoading(true);
-            
-            // Get authentication token and user data
-            const authToken = localStorage.getItem('authToken');
-            const userId = localStorage.getItem('userId');
-            const username = localStorage.getItem('userName');
-            
-            if (!authToken) {
-                setError('Authentication required. Please log in again.');
-                setIsLoading(false);
-                return;
-            }
-
-            console.log('Auth token:', authToken);
-            console.log('User ID:', userId);
-            console.log('Username:', username);
-
-            // Fetch tasks for the logged-in user
+            setError('');
             const response = await fetch(`${BASE_URL}tasks/alltasks/`, {
                 method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${authToken}`
-                }
+                headers: authHeaders,
             });
-            
-            if (!response.ok) {
-                throw new Error(`Failed to fetch tasks: ${response.status}`);
-            }
-            
+            if (response.status === 401) { handleLogout(); return; }
+            if (!response.ok) throw new Error(`Failed to fetch tasks: ${response.status}`);
+
             const allTasks = await response.json();
-            console.log('All tasks fetched:', allTasks);
-            
-            // IMPROVED FILTERING LOGIC
+            const numericUserId = parseInt(userId, 10);
+
             const userTasks = allTasks.filter(task => {
-                // Extract assignedTo value, handling different possible property names
-                const assigned = task.assignedTo || task.assigned_to || task.assigned_user;
-                
-                // Try to convert userId to number for comparison if it exists
-                const numericUserId = userId ? parseInt(userId, 10) : null;
-                
-                // Case 1: assigned is an object with id or username properties
-                if (typeof assigned === 'object' && assigned !== null) {
-                    // Check if either id or username matches
-                    return (
-                        (numericUserId && assigned.id === numericUserId) ||
-                        (assigned.id && assigned.id.toString() === userId) ||
-                        (username && assigned.username && assigned.username.toLowerCase() === username.toLowerCase()) ||
-                        (username && assigned.name && assigned.name.toLowerCase() === username.toLowerCase()) ||
-                        (username && assigned.full_name && assigned.full_name.toLowerCase() === username.toLowerCase())
-                    );
-                }
-                
-                // Case 2: assigned is a numeric ID
-                if (typeof assigned === 'number') {
-                    return numericUserId === assigned || userId === assigned.toString();
-                }
-                
-                // Case 3: assigned is a string (could be ID as string or username)
-                if (typeof assigned === 'string') {
-                    // Try to convert assigned to number if it looks like a numeric string
-                    const assignedNumeric = !isNaN(assigned) ? parseInt(assigned, 10) : null;
-                    
-                    return (
-                        (userId && assigned === userId) ||
-                        (numericUserId && assignedNumeric === numericUserId) ||
-                        (username && assigned.toLowerCase() === username.toLowerCase())
-                    );
-                }
-                
-                // Case 4: If the task has username property that matches
-                if (task.username && username && 
-                    task.username.toLowerCase() === username.toLowerCase()) {
-                    return true;
-                }
-                
-                // Case 5: If the task has user_id that matches
-                if (task.user_id && userId) {
-                    return task.user_id.toString() === userId.toString();
-                }
-                
+                const assigned = task.assigned_to;
+                if (typeof assigned === 'object' && assigned !== null) return assigned.id === numericUserId;
+                if (typeof assigned === 'number') return assigned === numericUserId;
+                if (typeof assigned === 'string') return parseInt(assigned, 10) === numericUserId;
                 return false;
             });
-            
-            console.log('Filtered tasks for current user:', userTasks);
-            
-            // Format tasks for display
-            const formattedTasks = userTasks.map(task => ({
+
+            setTasks(userTasks.map(task => ({
                 ...task,
-                milestone_name: getMilestoneName(task.milestone),
-                status_display: statusDisplay[task.status] || task.status,
+                milestone_name:     milestoneMapping[task.milestone] || task.milestone,
+                status_display:     statusDisplay[task.status]       || task.status,
                 start_date_display: formatDate(task.start_date),
-                end_date_display: formatDate(task.estimated_end_date || task.deadline)
-            }));
-            
-            setUserData(prevState => ({
-                ...prevState,
-                tasks: formattedTasks
-            }));
-            
+                end_date_display:   formatDate(task.estimated_end_date),
+            })));
+
         } catch (err) {
-            console.error('Error fetching user data:', err);
             setError(err.message || 'Failed to fetch tasks');
-            
-            // Handle authentication errors
-            if (err.response?.status === 401) {
-                setError('Your session has expired. Please log in again.');
-                if (onLogout) onLogout();
-            }
         } finally {
             setIsLoading(false);
         }
     };
 
-
-    async function handleUpdateTaskStatus(userId, newStatus) {
-        console.log(`Updating task ${userId} with data:`, newStatus);
-        const token = localStorage.getItem('authToken');
-        const response = await fetch(`${BASE_URL}tasks/tasks/${userId}/`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                ...(token && { 'Authorization': `Bearer ${token}` }),
-            },
-            body: JSON.stringify({status:newStatus}),
-        });
-        if (!response.ok) {
-            let errorMessage;
-            try {
-                const errorData = await response.json();
-                errorMessage = JSON.stringify(errorData);
-            } catch (err) {
-                errorMessage = `Status: ${response.status}`;
-            }
-            throw new Error(`Failed to update task: ${errorMessage}`);
+    const handleUpdateTaskStatus = async (taskId, newStatus) => {
+        try {
+            const response = await fetch(`${BASE_URL}tasks/tasks/${taskId}/`, {
+                method: 'PATCH',
+                headers: authHeaders,
+                body: JSON.stringify({ status: newStatus }),
+            });
+            if (!response.ok) throw new Error(JSON.stringify(await response.json()));
+            setTasks(prev => prev.map(t =>
+                t.id === taskId
+                    ? { ...t, status: newStatus, status_display: statusDisplay[newStatus] || newStatus }
+                    : t
+            ));
+        } catch (err) {
+            setError('Failed to update task status. Please try again.');
         }
-        return await response.json();
-    }
-    
+    };
 
- const handleLogout = () => {
- if(   onLogout){
-       onLogout();
- }
-    navigate('/');
-  };
+    const formatDate = (d) => d ? new Date(d).toLocaleDateString() : 'No deadline';
 
-
-    if (isLoading) {
-        return <div className="loading">Loading your dashboard...</div>;
-    }
+    if (isLoading) return <div className="loading">Loading your dashboard...</div>;
 
     return (
         <div className="dashboard-container">
+
+            {/* Banner */}
+            <div className="dashboard-banner">
+                <img src={bannerImage} alt="Polycab Banner" className="banner-image" />
+            </div>
+
+            {/* Header */}
             <div className="dashboard-header">
                 <div className="header-content">
                     <div>
-                        <h1>Welcome, {userData.username}</h1>
+                        <h1>Welcome, {username}</h1>
                         <p>Your Tasks Dashboard</p>
                     </div>
                     <button onClick={handleLogout} className="logout-button">
@@ -231,11 +146,8 @@ const UserDashboard = ({ onLogout }) => {
             <div className="dashboard-content">
                 <div className="task-section">
                     <h2>Your Assigned Tasks</h2>
-                    
-                    {userData.tasks.length === 0 ? (
-                        <div className="no-tasks">
-                            You have no assigned tasks at the moment.
-                        </div>
+                    {tasks.length === 0 ? (
+                        <div className="no-tasks">You have no assigned tasks at the moment.</div>
                     ) : (
                         <div className="task-table-container">
                             <table className="task-table">
@@ -256,33 +168,32 @@ const UserDashboard = ({ onLogout }) => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {userData.tasks.map((task, index) => (
-                                        <tr key={task.id} className={`status-${task.status?.toLowerCase() || 'pending'}`}>
+                                    {tasks.map((task, index) => (
+                                        <tr key={task.id} className={`status-${task.status || 'nil'}`}>
                                             <td>{index + 1}</td>
                                             <td>{task.title}</td>
-                                            <td>{task.subtasks || 'No subtasks'}</td>
-                                            <td>{task.milestone_name || 'Not specified'}</td>
-                                            <td>{task.state || 'Not specified'}</td>
-                                            <td>{task.business_area || 'Not specified'}</td>
-                                            <td>{task.district || 'Not specified'}</td>
-                                            <td>{task.block || 'Not specified'}</td>
-                                            <td>{task.start_date_display || 'Not set'}</td>
-                                            <td>{task.end_date_display || 'Not set'}</td>
+                                            <td>{task.subtasks        || 'No subtasks'}</td>
+                                            <td>{task.milestone_name  || 'Not specified'}</td>
+                                            <td>{task.state           || 'Not specified'}</td>
+                                            <td>{task.business_area   || 'Not specified'}</td>
+                                            <td>{task.district        || 'Not specified'}</td>
+                                            <td>{task.block           || 'Not specified'}</td>
+                                            <td>{task.start_date_display}</td>
+                                            <td>{task.end_date_display}</td>
                                             <td className="task-status">
-                                                <span className={`status-badge status-${task.status?.toLowerCase().replace(/\s+/g, '-')}`}>
-                                                    {task.status_display || statusDisplay[task.status] || task.status || 'PENDING'}
+                                                <span className={`status-badge status-${task.status}`}>
+                                                    {task.status_display}
                                                 </span>
                                             </td>
                                             <td>
-                                                <select 
-                                                    value={task.status || 'PENDING'}
+                                                <select
+                                                    value={task.status || 'nil'}
                                                     onChange={(e) => handleUpdateTaskStatus(task.id, e.target.value)}
                                                     className="status-select"
                                                 >
                                                     <option value="nil">Nil</option>
                                                     <option value="in_progress">In Progress</option>
                                                     <option value="completed">Completed</option>
-        
                                                 </select>
                                             </td>
                                         </tr>

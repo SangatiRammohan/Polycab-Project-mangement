@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PasswordInput from './PasswordInput';
 import { useNavigate } from 'react-router-dom';
 import './UserManagement.css';
 import './EditUser.css';
@@ -208,28 +209,28 @@ const AddUserForm = ({ onClose, onUserAdded, existingUsers }) => {
                 
                 <div className="form-group">
                     <label htmlFor="password">Password*</label>
-                    <input
-                        type="password"
+                    <PasswordInput
                         id="password"
                         name="password"
                         value={formData.password}
                         onChange={handleChange}
                         placeholder="Enter password"
                         className={errors.password ? 'error' : ''}
+                        autoComplete="new-password"
                     />
                     {errors.password && <div className="error-text">{errors.password}</div>}
                 </div>
                 
                 <div className="form-group">
                     <label htmlFor="confirm_password">Confirm Password*</label>
-                    <input
-                        type="password"
+                    <PasswordInput
                         id="confirm_password"
                         name="confirm_password"
                         value={formData.confirm_password}
                         onChange={handleChange}
                         placeholder="Confirm password"
                         className={errors.confirm_password ? 'error' : ''}
+                        autoComplete="new-password"
                     />
                     {errors.confirm_password && <div className="error-text">{errors.confirm_password}</div>}
                 </div>
@@ -495,28 +496,28 @@ const EditUserModal = ({ user, allUsers, onUserUpdated }) => {
                                 
                                 <div className="form-group">
                                     <label htmlFor="edit_password">Change Password (optional)</label>
-                                    <input
-                                        type="password"
+                                    <PasswordInput
                                         id="edit_password"
                                         name="password"
                                         value={formData.password}
                                         onChange={handleChange}
                                         placeholder="Enter new password"
                                         className={errors.password ? 'error' : ''}
+                                        autoComplete="new-password"
                                     />
                                     {errors.password && <div className="error-text">{errors.password}</div>}
                                 </div>
                                 
                                 <div className="form-group">
                                     <label htmlFor="edit_confirm_password">Confirm New Password</label>
-                                    <input
-                                        type="password"
+                                    <PasswordInput
                                         id="edit_confirm_password"
                                         name="confirm_password"
                                         value={formData.confirm_password}
                                         onChange={handleChange}
                                         placeholder="Confirm new password"
                                         className={errors.confirm_password ? 'error' : ''}
+                                        autoComplete="new-password"
                                     />
                                     {errors.confirm_password && <div className="error-text">{errors.confirm_password}</div>}
                                 </div>

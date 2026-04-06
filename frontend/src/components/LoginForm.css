@@ -1,48 +1,129 @@
-/* LoginForm.css */
+/* LoginForm.css — original styles preserved, demo section added */
 
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-  }
-  
-  .login-container {
+}
+
+.login-container {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     background-color: #f5f5f5;
     padding: 1rem;
-  }
-  
-  .login-form {
+}
+
+.login-form {
     width: 100%;
     max-width: 400px;
     padding: 2rem;
     background-color: white;
     border-radius: 8px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  }
-  
-  .login-header {
+}
+
+.login-header {
     text-align: center;
-    margin-bottom: 2rem;
-  }
-  
-  .title {
+    margin-bottom: 1.5rem;
+}
+
+.title {
     color: rgb(238, 51, 56);
     margin-bottom: 0.5rem;
     font-size: 2rem;
     font-weight: bold;
-  }
-  
-  h2 {
+}
+
+h2 {
     color: #333;
     font-size: 1.5rem;
     font-weight: 500;
-  }
-  
-  .input-group {
+}
+
+/* ── Demo Credentials ───────────────────────────────────────────────────── */
+.demo-credentials {
+    margin-bottom: 1.5rem;
+}
+
+.demo-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #999;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.demo-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.demo-item {
+    width: 100%;
+    background: #fafafa;
+    border: 1.5px solid #eee;
+    border-radius: 6px;
+    padding: 10px 14px;
+    cursor: pointer;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    transition: background 0.15s, box-shadow 0.15s, transform 0.1s;
+}
+
+.demo-item:hover {
+    background: #f0f4ff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transform: translateY(-1px);
+}
+
+.demo-item-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.demo-item-creds {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+}
+
+.demo-item-creds span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.75rem;
+    color: #555;
+    font-family: monospace;
+}
+
+.demo-item-hint {
+    font-size: 0.68rem;
+    font-weight: 600;
+    white-space: nowrap;
+    flex-shrink: 0;
+    opacity: 0.7;
+}
+
+.demo-item:hover .demo-item-hint {
+    opacity: 1;
+}
+
+/* ── Original form styles — unchanged ──────────────────────────────────── */
+.input-group {
     position: relative;
     margin-bottom: 1.5rem;
     display: flex;
@@ -50,14 +131,14 @@
     border: 1px solid #ddd;
     border-radius: 4px;
     overflow: hidden;
-  }
-  
-  .input-group:focus-within {
+}
+
+.input-group:focus-within {
     border-color: rgb(238, 51, 56);
     box-shadow: 0 0 0 2px rgba(238, 51, 56, 0.2);
-  }
-  
-  .icon-container {
+}
+
+.icon-container {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -66,18 +147,18 @@
     color: #666;
     height: 100%;
     border-right: 1px solid #ddd;
-  }
-  
-  input {
+}
+
+input {
     flex: 1;
     padding: 12px 15px;
     border: none;
     outline: none;
     font-size: 16px;
     width: 100%;
-  }
-  
-  .login-button {
+}
+
+.login-button {
     width: 100%;
     padding: 12px;
     background-color: rgb(238, 51, 56);
@@ -88,41 +169,65 @@
     font-weight: 500;
     cursor: pointer;
     transition: background-color 0.2s;
-  }
-  
-  .login-button:hover {
+}
+
+.login-button:hover:not(:disabled) {
     background-color: rgb(215, 40, 45);
-  }
-  
-  .error-message {
+}
+
+.login-button:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+.error-message {
     background-color: #ffebee;
     color: #d32f2f;
     padding: 10px;
     border-radius: 4px;
     margin-bottom: 1rem;
     text-align: center;
-  }
-  
-  /* Responsive adjustments */
-  @media (max-width: 480px) {
+}
+
+/* ── Responsive — original ──────────────────────────────────────────────── */
+@media (max-width: 480px) {
     .login-form {
-      padding: 1.5rem;
+        padding: 1.5rem;
     }
-    
     .title {
-      font-size: 1.75rem;
+        font-size: 1.75rem;
     }
-    
     h2 {
-      font-size: 1.25rem;
+        font-size: 1.25rem;
     }
-    
     input {
-      font-size: 14px;
+        font-size: 14px;
     }
-    
     .login-button {
-      padding: 10px;
-      font-size: 14px;
+        padding: 10px;
+        font-size: 14px;
     }
-  }
+    .demo-item {
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+    .demo-item-hint {
+        display: none;
+    }
+}
+
+/* ── Show / Hide password toggle ── */
+.eye-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 12px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #888;
+    transition: color 0.2s;
+    flex-shrink: 0;
+}
+.eye-btn:hover  { color: rgb(238, 51, 56); }
+.eye-btn:focus  { outline: none; }

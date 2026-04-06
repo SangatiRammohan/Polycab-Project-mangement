@@ -1,3 +1,4 @@
+import PasswordInput from './PasswordInput';
 import React, { useState } from 'react';
 
 const AddUserForm = ({ onAddUser, onCancel }) => {
@@ -78,20 +79,22 @@ const AddUserForm = ({ onAddUser, onCancel }) => {
                 </div>
                 <div>
                     <label>Password:</label>
-                    <input
-                        type="password"
+                    <PasswordInput
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
+                        placeholder="Password"
                         required
+                        autoComplete="new-password"
                     />
                 </div>
                 <div>
                     <label>Confirm Password:</label>
-                    <input
-                        type="password"
+                    <PasswordInput
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
+                        placeholder="Confirm Password"
                         required
+                        autoComplete="new-password"
                     />
                 </div>
                 <button type="submit">Create User</button>

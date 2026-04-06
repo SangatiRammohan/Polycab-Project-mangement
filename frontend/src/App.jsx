@@ -8,62 +8,50 @@ import Dashboard from './components/Dashboard';
 import UserDashboard from './components/UserDashboard';
 
 const App = () => {
-    const [userRole, setUserRole] = useState(null); // null, 'admin', or 'user'
-    const [userId, setUserId] = useState(null);
-    
-    // Check for existing session on app load
+    const [userRole, setUserRole] = useState(null);
+    const [userId,   setUserId]   = useState(null);
+
+    // On page load, restore session from localStorage
     useEffect(() => {
-        const checkLoggedInUser = () => {
-            const userStr = sessionStorage.getItem('currentUser');
-            if (userStr) {
-                try {
-                    const user = JSON.parse(userStr);
-                    setUserRole(user.role);
-                    setUserId(user.id);
-                } catch (error) {
-                    console.error("Error parsing user data:", error);
-                    sessionStorage.removeItem('currentUser');
-                }
-            }
-        };
-        
-        checkLoggedInUser();
+        const token  = localStorage.getItem('authToken');
+        const role   = localStorage.getItem('userRole');
+        const uid    = localStorage.getItem('userId');
+        if (token && role && uid) {
+            setUserRole(role);
+            setUserId(uid);
+        }
     }, []);
-    
-    const onLogin = (role, id, userData) => {
+
+    // Called by LoginForm after successful login
+    const onLogin = (role, id) => {
         setUserRole(role);
         setUserId(id);
-        
-        // Store user data in session storage for persistence
-        const userToStore = {
-            id: id,
-            role: role,
-            ...userData
-        };
-        
-        sessionStorage.setItem('currentUser', JSON.stringify(userToStore));
     };
-    
+
+    // Called by Navbar logout (admin) — UserDashboard handles its own logout
     const handleLogout = () => {
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('userRole');
+        localStorage.removeItem('userName');
+        localStorage.removeItem('userId');
         setUserRole(null);
         setUserId(null);
-        sessionStorage.removeItem('currentUser');
     };
-    
+
     const isLoggedIn = userRole !== null;
-    const isAdmin = userRole === 'admin';
-    
+    const isAdmin    = userRole === 'admin';
+
     return (
-        <Router>
-            {isLoggedIn && <Navbar isAdmin={isAdmin} onLogout={handleLogout} />}
+        <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+            {isLoggedIn && isAdmin && <Navbar isAdmin={isAdmin} onLogout={handleLogout} />}
             <div className="app-container">
                 <Routes>
                     <Route
                         path="/"
                         element={
-                            isLoggedIn ? 
-                                <Navigate to={isAdmin ? "/dashboard" : `/user-dashboard/${userId}`} /> : 
-                                <LoginForm onLogin={onLogin} />
+                            isLoggedIn
+                                ? <Navigate to={isAdmin ? '/dashboard' : `/user-dashboard/${userId}`} />
+                                : <LoginForm onLogin={onLogin} />
                         }
                     />
                     <Route
