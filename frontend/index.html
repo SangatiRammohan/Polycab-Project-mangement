@@ -1,18 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Django React Vite App</title>
-    <link rel="stylesheet" href="/src/styles/styles.css" />
-<link
-rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-/>
-    <link rel="icon" href="/favicon.ico" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Primary Meta -->
+  <title>Polycab Project Management System</title>
+  <meta name="description" content="Polycab Project Management System — Track field projects, manage teams and monitor task progress across Bihar." />
+  <meta name="author" content="Polycab" />
+  <meta name="theme-color" content="#0a0a8f" />
+
+  <!-- Open Graph -->
+  <meta property="og:type"        content="website" />
+  <meta property="og:title"       content="Polycab Project Management System" />
+  <meta property="og:description" content="Track field projects, manage teams and monitor task progress across Bihar." />
+  <meta property="og:image"       content="/src/assets/banner.jpg" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:title"       content="Polycab Project Management System" />
+  <meta name="twitter:description" content="Track field projects, manage teams and monitor task progress across Bihar." />
+  <meta name="twitter:image"       content="/src/assets/banner.jpg" />
+
+  <!-- Favicons -->
+  <link rel="icon"               type="image/x-icon"   href="./src//assets/faviicon.png" />
+  <link rel="icon"               type="image/png"      href="./src//assets/faviicon.png"  sizes="32x32" />
+  <link rel="icon"               type="image/png"      href="./src//assets/faviicon.png"  sizes="16x16" />
+  <link rel="icon"               type="image/png"      href="./src//assets/faviicon.png"  sizes="64x64" />
+  <link rel="icon"               type="image/svg+xml"  href="./src//assets/faviicon.png" />
+  <link rel="apple-touch-icon"   href="/apple-touch-icon.png" sizes="180x180" />
+  <link rel="manifest"           href="/site.webmanifest" />
+
+  <!-- Font Awesome -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+
+  <!-- App styles -->
+  <link rel="stylesheet" href="/src/styles/styles.css" />
+
+  <!-- Splash screen -->
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    #splash {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #ffffff;
+      z-index: 9999;
+      transition: opacity 0.4s ease, visibility 0.4s ease;
+    }
+    #splash.hidden { opacity: 0; visibility: hidden; }
+
+    .splash-title {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      font-size: 2.8rem;
+      font-weight: 800;
+      color: #ee3338;
+      letter-spacing: 4px;
+      margin-bottom: 6px;
+    }
+    .splash-sub {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      font-size: 0.9rem;
+      color: rgba(3, 3, 3, 0.7);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 40px;
+    }
+    .splash-spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid rgba(255,255,255,0.2);
+      border-top-color: #ee3338;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
 </head>
 <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.jsx"></script>
+
+  <div id="splash">
+    <div class="splash-title">Polycab</div>
+    <div class="splash-sub">Project Management System</div>
+    <div class="splash-spinner"></div>
+  </div>
+
+  <div id="app"></div>
+
+  <script type="module" src="/src/main.jsx"></script>
+
+  <script>
+    window.addEventListener('load', function () {
+      requestAnimationFrame(function () {
+        setTimeout(function () {
+          var splash = document.getElementById('splash');
+          if (splash) splash.classList.add('hidden');
+        }, 600);
+      });
+    });
+  </script>
+
 </body>
 </html>
